@@ -304,6 +304,17 @@ _.extend(Spark._Renderer.prototype, {
     });
     self.annotations = {};
 
+    // Save original versions of every 'value' property. Note that '[value]'
+    // doesn't match textareas: textareas have a value property but no value
+    // attribute.
+    //
+    // We save it in a one-element array expando. We use the array because IE8
+    // gets confused by expando properties with scalar values and exposes them
+    // as HTML attributes.
+    _.each(DomUtils.findAll(ret, '[value], textarea'), function (node) {
+      node._sparkOriginalRenderedValue = [node.value];
+    });
+
     return ret;
   }
 
